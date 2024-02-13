@@ -1,0 +1,13 @@
+[Unit]
+Description=Firewall.sh é um script contendo regras personalizadas de firewall
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/firewall.sh start
+ExecStop=/usr/local/sbin/firewall.sh stop
+KillMode=process
+RemainAfterExit=true
+
+[Install]
+WantedBy=multi-user.target

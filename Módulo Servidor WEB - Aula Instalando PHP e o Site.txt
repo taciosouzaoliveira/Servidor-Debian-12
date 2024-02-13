@@ -1,0 +1,40 @@
+
+Instalando o suporte a linguagem PHP:
+
+apt-get update
+apt-get install wget libapache2-mod-php php php-{curl,bcmath,gd,soap,zip,mbstring,mysql,xml,intl,pear,json,imagick,xmlrpc,mcrypt,getid3} libjs-cropper libjs-mediaelement libphp-phpmailer -y
+
+Baixando a última versão do wordpress do site br.wordpress.org:
+
+wget -c https://br.wordpress.org/latest-pt_BR.tar.gz -P /var/www
+
+Extraindo o código do wordpress dentro de /var/www:
+
+tar -xf /var/www/latest-pt_BR.tar.gz -C /var/www/
+ls -l /var/www
+
+Gerando o arquivo de configuração wp-config.php:
+
+cd /var/www/wordpress
+cp -v wp-config-sample.php wp-config.php
+
+Editando arquivo wp-config.php para o wordpress para acessar o banco de dados:
+
+
+vim wp-config.php
+
+
+define( 'DB_NAME', 'wordpress' );
+
+/** Usuário do banco de dados MySQL */
+define( 'DB_USER', 'admin' );
+
+/** Senha do banco de dados MySQL */
+define( 'DB_PASSWORD', 'Wordpress@Pa$$worD' );
+
+
+
+Alterar o proprietário dos arquivos do wordpress para que o usuário que executa o apache tenha permissão de acesso:
+
+chown www-data: -R /var/www/wordpress
+ls -l var/www/wordpress

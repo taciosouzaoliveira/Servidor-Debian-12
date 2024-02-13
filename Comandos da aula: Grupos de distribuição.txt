@@ -1,0 +1,32 @@
+
+
+1º - Acessar Banco de dados usando a conta root do MariaDB Server.
+
+mysql -u root -p
+
+2º - Conectar ao banco de dados vmail:
+
+SHOW DATABASES;
+USE vmail;
+
+3º - Criar grupo de distribuição( ALIAS ) no banco de dados:
+
+INSERT INTO alias (address, domain, active)
+	VALUES ( ‘ti@empresa.com.br’, ‘empresa.com.br’, 1);
+
+SELECT * FROM alias;
+
+4º - Adicionar os endereços de e-mail edson@empresa.com.br e linus@empresa.com.br que vão receber as cópias de e-mails enviados para ti@empresa.com.br, alterando a tabela forwardings:
+
+INSERT INTO forwardings (address, forwarding, domain, dest_domain, is_list, active)
+	VALUES ( ‘ti@empresa.com.br’, ‘edson@empresa.com.br’, ‘empresa.com.br’, ‘empresa.com.br’, 1, 1);
+
+
+INSERT INTO forwardings (address, forwarding, domain, dest_domain, is_list, active)
+	VALUES ( ‘ti@empresa.com.br’, ‘linus@empresa.com.br’, ‘empresa.com.br’, ‘empresa.com.br’, 1, 1);
+
+SELECT * FROM forwardings;
+
+5º - Sair do banco de dados:
+
+QUIT;

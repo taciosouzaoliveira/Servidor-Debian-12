@@ -1,0 +1,67 @@
+
+
+1º - Instalando dependências:
+
+
+apt-get update
+apt-get install realmd sssd krb5-user vim -y
+
+
+2º - Configuração cliente NTP para sincronizar data e hora com servidor samba AD DC:
+
+
+mkdir -v /etc/systemd/timesyncd.conf.d
+vim /etc/systemd/timesyncd.conf.d/ad.conf
+
+# conteúdo do arquivo /etc/systemd/timesyncd.conf.d/ad.conf
+
+[Time]
+NTP=10.10.10.5
+
+
+2.1º - Alterar permissão do arquivo /etc/systemd/timesyncd.conf.d/ad.conf:
+
+
+chmod -v 644 /etc/systemd/timesyncd.conf.d/ad.conf
+systemctl restart systemd-timesyncd.service
+
+
+3º - Renomear arquivo /etc/krb5.conf:
+
+
+mv -v /etc/krb5.conf /etc/krb5.conf.ori
+
+
+4º - Ingressando cliente linux ubuntu versão 22.04 no domínio:
+
+realm discover empresa.local
+realm join -v empresa.local --client-software=sssd -U administrator
+systemctl enable sssd.service
+
+
+5º - Configuração dos módulos de autenticação do PAM:
+
+pam-auth-update
+
+# Habilitar os Módulos PAM com a descrição:
+
+- * SSSD Authentication
+- * Create home directory on login
+
+6º - Se estiver usando o ubuntu mate, crie o arquivo /etc/lightdm/lightdm.conf.d/99-join_ad.conf
+
+vim /etc/lightdm/lightdm.conf.d/99-join_ad.conf
+
+## Conteúdo do arquivo
+
+[Seat:*]
+greeter-show-manual-login=true
+greeter-hide-users=true
+
+7º - Reinicie o sistema:
+
+reboot
+
+
+
+

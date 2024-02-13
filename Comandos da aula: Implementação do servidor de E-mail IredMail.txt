@@ -1,0 +1,35 @@
+
+
+
+1º - Configuração do hostname do servidor de e-mail.:
+
+hostname -f
+hostnamectl hostname mail
+
+Se o comando hostname -f não retornar o FQDN do servidor, você precisa alterar o arquivo /etc/hosts:
+
+vim /etc/hosts
+
+10.10.10.3 mail.empresa.com.br mail
+
+hostname -f
+
+
+2º - instalar dependências antes de baixar o iredmail:
+
+apt-get update
+apt-get install gzip dialog -y
+
+3º - Download do iredmail:
+
+wget -c https://github.com/iredmail/iRedMail/archive/refs/tags/1.6.6.tar.gz -P /usr/src/iredmail
+
+4º - Extrair código do iredmail:
+
+cd /usr/src/iredmail
+tar -xf 1.6.6.tar.gz
+
+5º - Executar script de instalação do iredmail:
+
+cd iRedMail-1.6.6
+bash iRedMail.sh

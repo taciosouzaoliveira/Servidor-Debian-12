@@ -1,0 +1,38 @@
+
+instalação do mariadb-server:
+
+apt-get update
+apt-get install mariadb-server -y
+
+Executar o script de segurança mysql_secure_installation, para melhorar a segurança do mariadb:
+
+mysql_secure_installation
+
+E por fim habilitar a unit do mariadb.service para iniciar durante o boot do sistema:
+
+systemctl enable mariadb.service
+systemctl restart mariadb.service
+
+Agora vamos acessar o prompt do sistema de gerenciamento de banco de dados mariadb para criar o banco de dados:
+
+mysql -u root -p
+
+Exibir os banco de dados existentes:
+
+SHOW DATABASES;
+
+Para o criar o banco de dados usado pelo wordpress usamos o comando:
+
+CREATE DATABASE wordpress;
+
+Criar uma conta de usuário que tenha acesso ao banco de dados do wordpress e conceder privilégios para administrar o banco de dados do wordpress:
+
+GRANT ALL ON wordpress.* TO admin IDENTIFIED BY ‘Wordpress@Pa$$worD’;
+
+Exibir os privilégios da conta de usuário(admin) criada no passo anterior:
+
+SHOW GRANTS FOR admin;
+
+Para efetivar as permissões de acesso sem reiniciar o mariadb usamos o comando:
+
+FLUSH PRIVILEGES;
