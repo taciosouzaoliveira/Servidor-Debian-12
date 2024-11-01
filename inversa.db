@@ -1,18 +1,18 @@
-$TTL 8h ;
-@	IN	SOA	dns1.empresa.com.br. root.empresa.com.br. (
-			2017061703 ; serial
-			3h ; refresh
-			30m ; retry
-			4d ; expiry
-			1h ; negative cache
+$TTL 8h ;                            # Define o Time-To-Live padrão para 8 horas
+@	IN	SOA	dns1.empresa.com.br. root.empresa.com.br. ( # Início da declaração do registro SOA
+			2017061703 ; serial             # Número de série do registro (incrementa a cada alteração)
+			3h ; refresh                    # Intervalo de atualização do registro (3 horas)
+			30m ; retry                     # Tempo de nova tentativa em caso de falha (30 minutos)
+			4d ; expiry                     # Tempo de expiração do registro (4 dias)
+			1h ; negative cache             # Tempo de cache para respostas negativas (1 hora)
 );
-@	IN	NS	dns1.empresa.com.br.
-@	IN	NS	dns2.empresa.com.br.
-@	IN	MX	5 mail.empresa.com.br.
-2	IN	PTR	dns1.empresa.com.br.
-3	IN	PTR	dns2.empresa.com.br.
-5	IN	PTR 	samba.empresa.com.br.
-4	IN	PTR	dhcp.empresa.com.br.
-7	IN	PTR	www.empresa.com.br.
-1	IN	PTR	firewall.empresa.com.br.
-3	IN	PTR	mail.empresa.com.br.
+@	IN	NS	dns1.empresa.com.br.        # Registro de servidor de nomes primário
+@	IN	NS	dns2.empresa.com.br.        # Registro de servidor de nomes secundário
+@	IN	MX	5 mail.empresa.com.br.      # Registro de troca de mensagens (MX) com prioridade 5
+2	IN	PTR	dns1.empresa.com.br.        # Registro de mapeamento reverso para dns1
+3	IN	PTR	dns2.empresa.com.br.        # Registro de mapeamento reverso para dns2
+5	IN	PTR 	samba.empresa.com.br.      # Registro de mapeamento reverso para samba
+4	IN	PTR	dhcp.empresa.com.br.       # Registro de mapeamento reverso para dhcp
+7	IN	PTR	www.empresa.com.br.         # Registro de mapeamento reverso para www
+1	IN	PTR	firewall.empresa.com.br.    # Registro de mapeamento reverso para firewall
+3	IN	PTR	mail.empresa.com.br.        # Registro de mapeamento reverso para mail
