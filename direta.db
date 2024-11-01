@@ -1,24 +1,33 @@
-$TTL 8h ;
+$TTL 8h ;                       # Define o Time-To-Live (TTL) padrão de 8 horas para os registros DNS
+
 @	IN	SOA	dns1.empresa.com.br. root.empresa.com.br. (
-			2017071101 ; serial
-			3h ; refresh
-			30m ; retry
-			4d ; expiry
-			1h ; negative cache
+			2017071101 ; serial         # Número de série da zona, deve ser incrementado a cada mudança na configuração
+			3h ; refresh                 # Intervalo de atualização: 3 horas para que servidores secundários chequem por atualizações
+			30m ; retry                  # Tempo de re-tentativa: 30 minutos caso o refresh falhe
+			4d ; expiry                  # Tempo de expiração: 4 dias antes do servidor secundário descartar a zona
+			1h ; negative cache          # Tempo de cache para respostas negativas: 1 hora
 );
-@	IN	NS	dns1.empresa.com.br.
-@	IN	NS	dns2.empresa.com.br.
-@	IN	MX	5 mail.empresa.com.br.
-dns1	IN	A	10.10.10.2
-dns2	IN	A	10.10.10.3
-samba	IN	A	10.10.10.5
-dhcp	IN	A	10.10.10.4
-www	IN	A	10.10.10.7
-web	IN	CNAME	www
-ftp	IN	CNAME	www
-firewall IN	A	10.10.10.1
-proxy	IN	CNAME	firewall
-mail	IN	A	10.10.10.3
-smtp	IN	CNAME	mail
-imap	IN	CNAME	mail
-pop3	IN	CNAME	mail
+
+@	IN	NS	dns1.empresa.com.br.      # Servidor de nomes principal para a zona
+@	IN	NS	dns2.empresa.com.br.      # Servidor de nomes secundário para a zona
+
+@	IN	MX	5 mail.empresa.com.br.    # Registro MX para definir o servidor de e-mail, prioridade 5 para mail.empresa.com.br
+
+# Registros A para os servidores específicos
+dns1	IN	A	10.10.10.2              # Registro A para o servidor DNS primário
+dns2	IN	A	10.10.10.3              # Registro A para o servidor DNS secundário
+samba	IN	A	10.10.10.5              # Registro A para o servidor Samba
+dhcp	IN	A	10.10.10.4              # Registro A para o servidor DHCP
+www	IN	A	10.10.10.7              # Registro A para o servidor web principal
+
+# Registros CNAME para alias
+web	IN	CNAME	www                     # Alias 'web' aponta para o servidor www
+ftp	IN	CNAME	www                     # Alias 'ftp' aponta para o servidor www
+
+firewall IN	A	10.10.10.1              # Registro A para o servidor firewall
+proxy	IN	CNAME	firewall              # Alias 'proxy' aponta para o firewall
+
+mail	IN	A	10.10.10.3              # Registro A para o servidor de e-mail
+smtp	IN	CNAME	mail                  # Alias 'smtp' aponta para o servidor mail
+imap	IN	CNAME	mail                  # Alias 'imap' aponta para o servidor mail
+pop3	IN	CNAME	mail                  # Alias 'pop3' aponta para o servidor mail
