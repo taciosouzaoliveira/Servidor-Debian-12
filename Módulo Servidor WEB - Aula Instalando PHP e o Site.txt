@@ -1,40 +1,40 @@
+# Instalando o suporte a linguagem PHP
 
-Instalando o suporte a linguagem PHP:
-
-apt-get update
+apt-get update                            # Atualiza a lista de pacotes disponíveis.
 apt-get install wget libapache2-mod-php php php-{curl,bcmath,gd,soap,zip,mbstring,mysql,xml,intl,pear,json,imagick,xmlrpc,mcrypt,getid3} libjs-cropper libjs-mediaelement libphp-phpmailer -y
+                                          # Instala o PHP e uma série de extensões necessárias, além de ferramentas adicionais para suporte completo do WordPress.
 
-Baixando a última versão do wordpress do site br.wordpress.org:
+# Baixando a última versão do WordPress do site br.wordpress.org
 
 wget -c https://br.wordpress.org/latest-pt_BR.tar.gz -P /var/www
+                                          # Baixa a versão mais recente do WordPress em português e salva no diretório /var/www.
 
-Extraindo o código do wordpress dentro de /var/www:
+# Extraindo o código do WordPress dentro de /var/www
 
 tar -xf /var/www/latest-pt_BR.tar.gz -C /var/www/
-ls -l /var/www
+                                          # Extrai o arquivo tar.gz do WordPress para o diretório /var/www.
+ls -l /var/www                            # Lista o conteúdo de /var/www para verificar os arquivos extraídos.
 
-Gerando o arquivo de configuração wp-config.php:
+# Gerando o arquivo de configuração wp-config.php
 
-cd /var/www/wordpress
-cp -v wp-config-sample.php wp-config.php
+cd /var/www/wordpress                     # Navega até o diretório do WordPress.
+cp -v wp-config-sample.php wp-config.php  # Cria uma cópia do arquivo de configuração de exemplo, renomeando para wp-config.php.
 
-Editando arquivo wp-config.php para o wordpress para acessar o banco de dados:
+# Editando o arquivo wp-config.php para configurar o acesso ao banco de dados do WordPress
 
+vim wp-config.php                         # Abre o arquivo wp-config.php no editor Vim para editar as informações de banco de dados.
 
-vim wp-config.php
+# Configurações de banco de dados no arquivo wp-config.php
 
-
-define( 'DB_NAME', 'wordpress' );
+define( 'DB_NAME', 'wordpress' );         # Define o nome do banco de dados para 'wordpress'.
 
 /** Usuário do banco de dados MySQL */
-define( 'DB_USER', 'admin' );
+define( 'DB_USER', 'admin' );             # Define o nome de usuário do banco de dados como 'admin'.
 
 /** Senha do banco de dados MySQL */
-define( 'DB_PASSWORD', 'Wordpress@Pa$$worD' );
+define( 'DB_PASSWORD', 'Wordpress@Pa$$worD' ); # Define a senha do banco de dados para o usuário 'admin'.
 
+# Alterar o proprietário dos arquivos do WordPress para permitir acesso ao usuário do Apache
 
-
-Alterar o proprietário dos arquivos do wordpress para que o usuário que executa o apache tenha permissão de acesso:
-
-chown www-data: -R /var/www/wordpress
-ls -l var/www/wordpress
+chown www-data: -R /var/www/wordpress     # Define o proprietário dos arquivos como www-data, que é o usuário padrão do Apache.
+ls -l /var/www/wordpress                  # Lista o conteúdo do diretório para verificar as permissões e proprietários dos arquivos.
