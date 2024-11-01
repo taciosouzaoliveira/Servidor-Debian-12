@@ -1,35 +1,27 @@
+# 1º - Configuração do hostname do servidor de e-mail:
+hostname -f                      # Verifica o Fully Qualified Domain Name (FQDN) atual do servidor.
+hostnamectl hostname mail        # Define o hostname do servidor como "mail".
 
+# Se o comando hostname -f não retornar o FQDN do servidor, é necessário ajustar o arquivo /etc/hosts:
+vim /etc/hosts                   # Abre o arquivo /etc/hosts para edição.
 
-
-1º - Configuração do hostname do servidor de e-mail.:
-
-hostname -f
-hostnamectl hostname mail
-
-Se o comando hostname -f não retornar o FQDN do servidor, você precisa alterar o arquivo /etc/hosts:
-
-vim /etc/hosts
-
+# Adiciona a entrada abaixo no arquivo /etc/hosts para definir o FQDN:
 10.10.10.3 mail.empresa.com.br mail
 
-hostname -f
+hostname -f                      # Verifica novamente o FQDN para confirmar a alteração.
 
+# 2º - Instalar dependências antes de baixar o iRedMail:
+apt-get update                   # Atualiza a lista de pacotes disponíveis.
+apt-get install gzip dialog -y   # Instala as dependências "gzip" e "dialog" necessárias para a instalação.
 
-2º - instalar dependências antes de baixar o iredmail:
-
-apt-get update
-apt-get install gzip dialog -y
-
-3º - Download do iredmail:
-
+# 3º - Download do iRedMail:
 wget -c https://github.com/iredmail/iRedMail/archive/refs/tags/1.6.6.tar.gz -P /usr/src/iredmail
+                                 # Baixa o arquivo do iRedMail versão 1.6.6 e o salva no diretório /usr/src/iredmail.
 
-4º - Extrair código do iredmail:
+# 4º - Extrair código do iRedMail:
+cd /usr/src/iredmail             # Navega para o diretório onde o arquivo foi baixado.
+tar -xf 1.6.6.tar.gz             # Extrai o conteúdo do arquivo iRedMail.
 
-cd /usr/src/iredmail
-tar -xf 1.6.6.tar.gz
-
-5º - Executar script de instalação do iredmail:
-
-cd iRedMail-1.6.6
-bash iRedMail.sh
+# 5º - Executar script de instalação do iRedMail:
+cd iRedMail-1.6.6                # Navega para o diretório extraído do iRedMail.
+bash iRedMail.sh                 # Executa o script de instalação do iRedMail.
