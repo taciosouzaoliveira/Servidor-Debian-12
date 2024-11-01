@@ -1,67 +1,49 @@
+# 1º - Instalando dependências necessárias para autenticação e configuração do cliente no domínio AD
 
+apt-get update                                  # Atualiza a lista de pacotes para garantir versões mais recentes.
+apt-get install realmd sssd krb5-user vim -y     # Instala pacotes para gerenciamento de domínio (realmd), serviços de autenticação (sssd), e ferramentas Kerberos e editor vim.
 
-1º - Instalando dependências:
+# 2º - Configuração do cliente NTP para sincronizar data e hora com o servidor Samba AD DC
 
+mkdir -v /etc/systemd/timesyncd.conf.d           # Cria um diretório de configuração para o serviço de sincronização de tempo.
+vim /etc/systemd/timesyncd.conf.d/ad.conf        # Abre o arquivo de configuração para adicionar o servidor NTP do AD.
 
-apt-get update
-apt-get install realmd sssd krb5-user vim -y
-
-
-2º - Configuração cliente NTP para sincronizar data e hora com servidor samba AD DC:
-
-
-mkdir -v /etc/systemd/timesyncd.conf.d
-vim /etc/systemd/timesyncd.conf.d/ad.conf
-
-# conteúdo do arquivo /etc/systemd/timesyncd.conf.d/ad.conf
-
+# Adicionar o seguinte conteúdo no arquivo /etc/systemd/timesyncd.conf.d/ad.conf para configurar o servidor NTP
 [Time]
-NTP=10.10.10.5
+NTP=10.10.10.5                                   # Define o IP do servidor NTP para sincronizar o horário com o controlador de domínio.
 
+# 2.1º - Alterar permissão do arquivo de configuração para garantir acesso apropriado
 
-2.1º - Alterar permissão do arquivo /etc/systemd/timesyncd.conf.d/ad.conf:
+chmod -v 644 /etc/systemd/timesyncd.conf.d/ad.conf    # Define as permissões do arquivo para leitura e gravação pelo proprietário e leitura para outros.
+systemctl restart systemd-timesyncd.service            # Reinicia o serviço de sincronização de tempo para aplicar as alterações.
 
+# 3º - Renomear o arquivo /etc/krb5.conf para fazer backup antes da configuração do domínio
 
-chmod -v 644 /etc/systemd/timesyncd.conf.d/ad.conf
-systemctl restart systemd-timesyncd.service
+mv -v /etc/krb5.conf /etc/krb5.conf.ori            # Renomeia o arquivo original do Kerberos para preservá-lo como backup.
 
+# 4º - Ingressar o cliente Linux Ubuntu 22.04 no domínio Active Directory
 
-3º - Renomear arquivo /etc/krb5.conf:
+realm discover empresa.local                        # Descobre o domínio especificado para verificar sua disponibilidade.
+realm join -v empresa.local --client-software=sssd -U administrator  # Ingresse o sistema no domínio, especificando o uso de sssd e o administrador do domínio.
+systemctl enable sssd.service                      # Habilita o serviço sssd para iniciar automaticamente no boot, gerenciando autenticação de domínio.
 
+# 5º - Configuração dos módulos de autenticação PAM
 
-mv -v /etc/krb5.conf /etc/krb5.conf.ori
+pam-auth-update                                    # Inicia o gerenciador de configuração PAM para habilitar módulos de autenticação.
 
+# Selecione e habilite os Módulos PAM com a descrição:
+# - * SSSD Authentication
+# - * Create home directory on login
 
-4º - Ingressando cliente linux ubuntu versão 22.04 no domínio:
+# 6º - Configuração adicional para Ubuntu Mate para exibir a tela de login manual
 
-realm discover empresa.local
-realm join -v empresa.local --client-software=sssd -U administrator
-systemctl enable sssd.service
+vim /etc/lightdm/lightdm.conf.d/99-join_ad.conf    # Cria o arquivo de configuração para lightdm para customizar opções de login.
 
-
-5º - Configuração dos módulos de autenticação do PAM:
-
-pam-auth-update
-
-# Habilitar os Módulos PAM com a descrição:
-
-- * SSSD Authentication
-- * Create home directory on login
-
-6º - Se estiver usando o ubuntu mate, crie o arquivo /etc/lightdm/lightdm.conf.d/99-join_ad.conf
-
-vim /etc/lightdm/lightdm.conf.d/99-join_ad.conf
-
-## Conteúdo do arquivo
-
+## Conteúdo do arquivo para permitir login manual e ocultar lista de usuários na tela de login
 [Seat:*]
-greeter-show-manual-login=true
-greeter-hide-users=true
+greeter-show-manual-login=true                    # Habilita a opção de login manual para o usuário digitar suas credenciais.
+greeter-hide-users=true                           # Oculta a lista de usuários da tela de login por segurança.
 
-7º - Reinicie o sistema:
+# 7º - Reiniciar o sistema para aplicar todas as configurações
 
-reboot
-
-
-
-
+reboot                                            # Reinicia o sistema para que as alterações entrem em vigor e o sistema ingresse totalmente no domínio.
