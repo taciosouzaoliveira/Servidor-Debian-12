@@ -1,4 +1,4 @@
-$TTL 8h ;                            # Define o Time-To-Live padrão para 8 horas
+$TTL 8h ;                            			# Define o Time-To-Live padrão para 8 horas
 @	IN	SOA	dns1.empresa.com.br. root.empresa.com.br. ( # Início da declaração do registro SOA
 			2017061703 ; serial             # Número de série do registro (incrementa a cada alteração)
 			3h ; refresh                    # Intervalo de atualização do registro (3 horas)
