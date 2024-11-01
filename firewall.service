@@ -1,13 +1,13 @@
 [Unit]
-Description=Firewall.sh é um script contendo regras personalizadas de firewall
-After=network.target
+Description=Firewall.sh é um script contendo regras personalizadas de firewall  # Descrição da unidade, indicando que é um serviço para o script de firewall personalizado
+After=network.target                        # Define que o serviço só deve iniciar após o alvo de rede estar ativo
 
 [Service]
-Type=oneshot
-ExecStart=/usr/local/sbin/firewall.sh start
-ExecStop=/usr/local/sbin/firewall.sh stop
-KillMode=process
-RemainAfterExit=true
+Type=oneshot                                # O serviço será executado uma vez e, ao finalizar, não será reiniciado automaticamente
+ExecStart=/usr/local/sbin/firewall.sh start # Comando a ser executado para iniciar o serviço, chamando o script firewall.sh com o argumento 'start'
+ExecStop=/usr/local/sbin/firewall.sh stop   # Comando a ser executado para parar o serviço, chamando o script firewall.sh com o argumento 'stop'
+KillMode=process                            # Define o modo de interrupção dos processos, encerrando apenas os processos iniciados diretamente pelo serviço
+RemainAfterExit=true                        # Garante que o estado do serviço seja considerado ativo mesmo após a execução do script
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=multi-user.target                  # Define que o serviço será iniciado no modo multiusuário do sistema, carregando o serviço ao boot
