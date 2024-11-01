@@ -1,38 +1,38 @@
+# Instalação do MariaDB Server
 
-instalação do mariadb-server:
+apt-get update                          # Atualiza a lista de pacotes disponíveis para garantir que instalaremos a versão mais recente.
+apt-get install mariadb-server -y       # Instala o servidor MariaDB e aceita automaticamente a instalação (-y).
 
-apt-get update
-apt-get install mariadb-server -y
+# Executar o script de segurança mysql_secure_installation para reforçar a segurança do MariaDB
 
-Executar o script de segurança mysql_secure_installation, para melhorar a segurança do mariadb:
+mysql_secure_installation               # Executa o script que permite configurações de segurança, como definir senha para root, remover usuários anônimos e desabilitar o acesso remoto para root.
 
-mysql_secure_installation
+# Habilitar a unit mariadb.service para iniciar automaticamente no boot e reiniciar o serviço
 
-E por fim habilitar a unit do mariadb.service para iniciar durante o boot do sistema:
+systemctl enable mariadb.service        # Habilita o MariaDB para iniciar automaticamente durante o boot do sistema.
+systemctl restart mariadb.service       # Reinicia o serviço MariaDB para aplicar as alterações e garantir que esteja em execução.
 
-systemctl enable mariadb.service
-systemctl restart mariadb.service
+# Acessar o prompt do sistema de gerenciamento de banco de dados MariaDB como root para criar o banco de dados
 
-Agora vamos acessar o prompt do sistema de gerenciamento de banco de dados mariadb para criar o banco de dados:
+mysql -u root -p                        # Acessa o MariaDB com o usuário root; será solicitada a senha do root configurada.
 
-mysql -u root -p
+# Exibir os bancos de dados existentes
 
-Exibir os banco de dados existentes:
+SHOW DATABASES;                         # Exibe todos os bancos de dados existentes no MariaDB.
 
-SHOW DATABASES;
+# Criar o banco de dados para ser usado pelo WordPress
 
-Para o criar o banco de dados usado pelo wordpress usamos o comando:
+CREATE DATABASE wordpress;               # Cria um banco de dados chamado 'wordpress' para armazenar as informações do site.
 
-CREATE DATABASE wordpress;
-
-Criar uma conta de usuário que tenha acesso ao banco de dados do wordpress e conceder privilégios para administrar o banco de dados do wordpress:
+# Criar uma conta de usuário que tenha acesso ao banco de dados do WordPress e conceder privilégios
 
 GRANT ALL ON wordpress.* TO admin IDENTIFIED BY ‘Wordpress@Pa$$worD’;
+                                        # Concede ao usuário 'admin' acesso total ao banco 'wordpress' e define a senha para o usuário.
 
-Exibir os privilégios da conta de usuário(admin) criada no passo anterior:
+# Exibir os privilégios da conta de usuário (admin) criada no passo anterior
 
-SHOW GRANTS FOR admin;
+SHOW GRANTS FOR admin;                  # Mostra os privilégios concedidos ao usuário 'admin' para confirmar as permissões.
 
-Para efetivar as permissões de acesso sem reiniciar o mariadb usamos o comando:
+# Atualizar as permissões de acesso sem reiniciar o MariaDB
 
-FLUSH PRIVILEGES;
+FLUSH PRIVILEGES;                       # Recarrega as permissões para que as alterações sejam aplicadas imediatamente.
