@@ -1,32 +1,24 @@
-
-
-1º - Acessar Banco de dados usando a conta root do MariaDB Server.
-
+# 1º - Acessar o Banco de dados usando a conta root do MariaDB Server.
 mysql -u root -p
 
-2º - Conectar ao banco de dados vmail:
+# 2º - Conectar ao banco de dados "vmail":
+SHOW DATABASES;  # Exibe a lista de bancos de dados para verificar a existência de "vmail".
+USE vmail;       # Seleciona o banco de dados "vmail" para operações subsequentes.
 
-SHOW DATABASES;
-USE vmail;
-
-3º - Criar grupo de distribuição( ALIAS ) no banco de dados:
-
+# 3º - Criar grupo de distribuição (ALIAS) no banco de dados:
 INSERT INTO alias (address, domain, active)
-	VALUES ( ‘ti@empresa.com.br’, ‘empresa.com.br’, 1);
+    VALUES ( ‘ti@empresa.com.br’, ‘empresa.com.br’, 1);  # Insere um novo alias (grupo de distribuição) para "ti@empresa.com.br".
 
-SELECT * FROM alias;
+SELECT * FROM alias;  # Verifica se o alias foi criado exibindo todos os registros da tabela "alias".
 
-4º - Adicionar os endereços de e-mail edson@empresa.com.br e linus@empresa.com.br que vão receber as cópias de e-mails enviados para ti@empresa.com.br, alterando a tabela forwardings:
+# 4º - Adicionar endereços de e-mail para receber cópias de e-mails enviados para "ti@empresa.com.br", alterando a tabela "forwardings":
+INSERT INTO forwardings (address, forwarding, domain, dest_domain, is_list, active)
+    VALUES ( ‘ti@empresa.com.br’, ‘edson@empresa.com.br’, ‘empresa.com.br’, ‘empresa.com.br’, 1, 1);  # Adiciona "edson@empresa.com.br" como destinatário de e-mails do alias.
 
 INSERT INTO forwardings (address, forwarding, domain, dest_domain, is_list, active)
-	VALUES ( ‘ti@empresa.com.br’, ‘edson@empresa.com.br’, ‘empresa.com.br’, ‘empresa.com.br’, 1, 1);
+    VALUES ( ‘ti@empresa.com.br’, ‘linus@empresa.com.br’, ‘empresa.com.br’, ‘empresa.com.br’, 1, 1);  # Adiciona "linus@empresa.com.br" como destinatário de e-mails do alias.
 
+SELECT * FROM forwardings;  # Exibe todos os registros da tabela "forwardings" para confirmar as inserções.
 
-INSERT INTO forwardings (address, forwarding, domain, dest_domain, is_list, active)
-	VALUES ( ‘ti@empresa.com.br’, ‘linus@empresa.com.br’, ‘empresa.com.br’, ‘empresa.com.br’, 1, 1);
-
-SELECT * FROM forwardings;
-
-5º - Sair do banco de dados:
-
-QUIT;
+# 5º - Sair do banco de dados:
+QUIT;  # Comando para sair do MariaDB.
